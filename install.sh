@@ -18,9 +18,11 @@ if [[ -n "$script_source" ]]; then
   if [[ -f "$local_zip_dir/Linux_WPS_Fonts.zip" ]]; then
     cp "$local_zip_dir/Linux_WPS_Fonts.zip" "$tmp_dir/fonts.zip"
   else
+    printf 'Downloading fonts...\n'
     curl -fSL --progress-bar "$ZIP_URL" -o "$tmp_dir/fonts.zip"
   fi
 else
+  printf 'Downloading fonts...\n'
   curl -fSL --progress-bar "$ZIP_URL" -o "$tmp_dir/fonts.zip"
 fi
 
