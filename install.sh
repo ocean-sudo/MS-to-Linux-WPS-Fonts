@@ -9,7 +9,10 @@ tmp_dir="$(mktemp -d)"
 cleanup() { rm -rf "$tmp_dir"; }
 trap cleanup EXIT
 
-script_source="${BASH_SOURCE[0]-}"
+script_source=""
+if [[ ${BASH_SOURCE-} ]]; then
+  script_source="${BASH_SOURCE[0]}"
+fi
 if [[ -n "$script_source" ]]; then
   local_zip_dir="$(cd "$(dirname "$script_source")" && pwd)"
   if [[ -f "$local_zip_dir/Linux_WPS_Fonts.zip" ]]; then
