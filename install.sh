@@ -18,17 +18,18 @@ if [[ -n "$script_source" ]]; then
   if [[ -f "$local_zip_dir/Linux_WPS_Fonts.zip" ]]; then
     cp "$local_zip_dir/Linux_WPS_Fonts.zip" "$tmp_dir/fonts.zip"
   else
-    curl -fsSL "$ZIP_URL" -o "$tmp_dir/fonts.zip"
+    curl -fSL --progress-bar "$ZIP_URL" -o "$tmp_dir/fonts.zip"
   fi
 else
-  curl -fsSL "$ZIP_URL" -o "$tmp_dir/fonts.zip"
+  curl -fSL --progress-bar "$ZIP_URL" -o "$tmp_dir/fonts.zip"
 fi
 
 mkdir -p "$FONT_DIR"
+printf 'Extracting fonts...\n'
 if command -v bsdtar >/dev/null 2>&1; then
   bsdtar -xf "$tmp_dir/fonts.zip" -C "$FONT_DIR"
 elif command -v unzip >/dev/null 2>&1; then
-  unzip -q "$tmp_dir/fonts.zip" -d "$FONT_DIR"
+  unzip "$tmp_dir/fonts.zip" -d "$FONT_DIR" >/dev/null
 elif command -v python3 >/dev/null 2>&1; then
   ZIP_PATH="$tmp_dir/fonts.zip" DEST_DIR="$FONT_DIR" python3 - <<'PY'
 import os
