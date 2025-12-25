@@ -13,7 +13,7 @@ curl -fsSL https://raw.githubusercontent.com/ocean-sudo/MS-to-Linux-WPS-Fonts/ma
 ## 环境要求
 
 - `bash`、`curl`
-- `python3`（用于解压 zip）
+- 解压器：`bsdtar`（优先）/`unzip`/`python3` 任一可用
 - `fontconfig`（提供 `fc-cache` 刷新字体缓存）
 
 ## 字体列表

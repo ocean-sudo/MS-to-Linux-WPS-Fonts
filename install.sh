@@ -17,7 +17,12 @@ else
 fi
 
 mkdir -p "$FONT_DIR"
-ZIP_PATH="$tmp_dir/fonts.zip" DEST_DIR="$FONT_DIR" python3 - <<'PY'
+if command -v bsdtar >/dev/null 2>&1; then
+  bsdtar -xf "$tmp_dir/fonts.zip" -C "$FONT_DIR"
+elif command -v unzip >/dev/null 2>&1; then
+  unzip -q "$tmp_dir/fonts.zip" -d "$FONT_DIR"
+elif command -v python3 >/dev/null 2>&1; then
+  ZIP_PATH="$tmp_dir/fonts.zip" DEST_DIR="$FONT_DIR" python3 - <<'PY'
 import os
 import zipfile
 
@@ -26,6 +31,10 @@ dest_dir = os.environ["DEST_DIR"]
 with zipfile.ZipFile(zip_path, "r") as zf:
     zf.extractall(dest_dir)
 PY
+else
+  printf 'Missing extractor: install bsdtar or unzip, or python3 to extract the zip.\n' >&2
+  exit 1
+fi
 
 if command -v fc-cache >/dev/null 2>&1; then
   fc-cache -f "$FONT_DIR" >/dev/null
